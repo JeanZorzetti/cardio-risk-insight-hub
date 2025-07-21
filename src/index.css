@@ -2,56 +2,73 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Sistema de Design Médico Profissional */
 
 @layer base {
   :root {
+    /* Base colors */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 213 32% 15%;
 
+    /* Medical theme colors */
+    --medical-primary: 213 52% 32%;        /* Azul médico #2a5298 */
+    --medical-primary-foreground: 0 0% 100%;
+    --medical-secondary: 213 25% 45%;
+    --medical-secondary-foreground: 0 0% 100%;
+
+    /* Risk status colors */
+    --risk-high: 354 70% 54%;              /* Vermelho alto risco #dc3545 */
+    --risk-high-foreground: 0 0% 100%;
+    --risk-medium: 45 100% 51%;            /* Amarelo médio risco #ffc107 */
+    --risk-medium-foreground: 213 32% 15%;
+    --risk-low: 134 61% 41%;               /* Verde baixo risco #28a745 */
+    --risk-low-foreground: 0 0% 100%;
+
+    /* UI components */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
+    --card-foreground: 213 32% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 213 32% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 213 52% 32%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 210 25% 95%;
+    --secondary-foreground: 213 32% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 210 25% 96%;
+    --muted-foreground: 213 15% 55%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 213 15% 92%;
+    --accent-foreground: 213 32% 15%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 354 70% 54%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 213 15% 88%;
+    --input: 213 15% 88%;
+    --ring: 213 52% 32%;
 
     --radius: 0.5rem;
 
+    /* Medical gradients and effects */
+    --gradient-medical: linear-gradient(135deg, hsl(var(--medical-primary)), hsl(var(--medical-secondary)));
+    --gradient-risk-high: linear-gradient(135deg, hsl(var(--risk-high)), hsl(var(--risk-high)) 80%);
+    --gradient-risk-medium: linear-gradient(135deg, hsl(var(--risk-medium)), hsl(var(--risk-medium)) 80%);
+    --gradient-risk-low: linear-gradient(135deg, hsl(var(--risk-low)), hsl(var(--risk-low)) 80%);
+    
+    /* Shadows */
+    --shadow-medical: 0 10px 30px -10px hsl(var(--medical-primary) / 0.3);
+    --shadow-risk: 0 5px 20px -5px hsl(var(--primary) / 0.2);
+
+    /* Sidebar (keeping existing) */
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -101,5 +118,60 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+}
+
+@layer components {
+  /* Medical specific utility classes */
+  .medical-gradient {
+    background: var(--gradient-medical);
+  }
+  
+  .risk-high-gradient {
+    background: var(--gradient-risk-high);
+  }
+  
+  .risk-medium-gradient {
+    background: var(--gradient-risk-medium);
+  }
+  
+  .risk-low-gradient {
+    background: var(--gradient-risk-low);
+  }
+  
+  .shadow-medical {
+    box-shadow: var(--shadow-medical);
+  }
+  
+  .shadow-risk {
+    box-shadow: var(--shadow-risk);
+  }
+
+  /* Animation for gauges and progress bars */
+  .animate-gauge {
+    transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Medical card enhancements */
+  .card-medical {
+    @apply border-medical-primary/20 shadow-medical;
+  }
+  
+  .card-risk-high {
+    @apply border-risk-high/30 shadow-lg;
+  }
+  
+  .card-risk-medium {
+    @apply border-risk-medium/30 shadow-lg;
+  }
+  
+  .card-risk-low {
+    @apply border-risk-low/30 shadow-lg;
+  }
+
+  /* Smooth hover effects for medical components */
+  .medical-hover {
+    @apply transition-all duration-300 hover:shadow-medical hover:scale-[1.02];
   }
 }

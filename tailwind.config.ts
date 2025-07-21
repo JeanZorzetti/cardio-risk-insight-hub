@@ -52,6 +52,22 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// Medical theme colors
+				medical: {
+					primary: 'hsl(var(--medical-primary))',
+					'primary-foreground': 'hsl(var(--medical-primary-foreground))',
+					secondary: 'hsl(var(--medical-secondary))',
+					'secondary-foreground': 'hsl(var(--medical-secondary-foreground))'
+				},
+				// Risk status colors
+				risk: {
+					high: 'hsl(var(--risk-high))',
+					'high-foreground': 'hsl(var(--risk-high-foreground))',
+					medium: 'hsl(var(--risk-medium))',
+					'medium-foreground': 'hsl(var(--risk-medium-foreground))',
+					low: 'hsl(var(--risk-low))',
+					'low-foreground': 'hsl(var(--risk-low-foreground))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
