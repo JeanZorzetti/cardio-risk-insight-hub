@@ -11,8 +11,5 @@
       "dest": "/index.html"
     }
   ],
-  "env": {
-    "VITE_API_URL": "@cardiocare_api_url"
-  },
   "regions": ["gru1"]
 }
