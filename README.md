@@ -70,9 +70,11 @@ VITE_API_URL=http://localhost:8000
 1. **Conectar repositório no Vercel**
 2. **Configurar variáveis de ambiente:**
    ```
-   VITE_API_URL=https://seu-backend.easypanel.app
+   VITE_API_URL=https://cardioapi.roilabs.com.br
+   NEXT_PUBLIC_API_URL=https://cardioapi.roilabs.com.br
    ```
-3. **Deploy automático**
+3. **Configurar domínio personalizado**: `cardiorisk.roilabs.com.br`
+4. **Deploy automático**
 
 ## 📡 API Endpoints
 
@@ -151,6 +153,16 @@ Este projeto implementa conceitos avançados de IA aplicada na medicina:
 3. Commit das mudanças (`git commit -m 'Adicionar nova funcionalidade'`)
 4. Push para branch (`git push origin feature/nova-funcionalidade`)
 5. Abrir Pull Request
+
+## 🌐 URLs de Produção
+
+### Aplicação em Funcionamento
+- **Frontend**: https://cardiorisk.roilabs.com.br
+- **Backend API**: https://cardioapi.roilabs.com.br
+- **Documentação API**: https://cardioapi.roilabs.com.br/docs
+
+### Repositório
+- **GitHub**: https://github.com/JeanZorzetti/cardio-risk-insight-hub
 
 ## 📝 Licença
 

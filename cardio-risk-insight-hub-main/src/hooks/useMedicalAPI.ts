@@ -49,7 +49,7 @@ interface APIResponse {
   explicacoes: Explicacoes;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://cardioapi.roilabs.com.br';
 
 export function useMedicalAPI() {
   const [loading, setLoading] = useState(false);

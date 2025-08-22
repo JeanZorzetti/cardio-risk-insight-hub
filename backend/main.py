@@ -26,7 +26,9 @@ ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Vite dev server
     "http://localhost:4173",  # Vite preview
     "https://*.vercel.app",
-    "https://cardio-risk-insight-hub.vercel.app",  # URL do projeto
+    "https://cardio-risk-insight-hub.vercel.app",  # URL Vercel
+    "https://cardiorisk.roilabs.com.br",  # Domínio personalizado frontend
+    "http://cardiorisk.roilabs.com.br",   # HTTP fallback
 ]
 
 app.add_middleware(
