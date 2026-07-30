@@ -5,11 +5,7 @@
       "use": "@vercel/next"
     }
   ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/"
-    }
-  ],
-  "regions": ["gru1"]
+  "regions": [
+    "gru1"
+  ]
 }
