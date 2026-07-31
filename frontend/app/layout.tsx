@@ -7,14 +7,14 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://cardiorisk.roilabs.com.br'),
-  title: 'Sistema IA Médica',
+  title: 'CardioCare AI — Análise de Risco Cardiovascular',
   description: 'Análise de Risco Cardiovascular com Inteligência Artificial',
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
     url: 'https://cardiorisk.roilabs.com.br',
-    title: 'Sistema IA Médica',
+    title: 'CardioCare AI — Análise de Risco Cardiovascular',
     description: 'Análise de Risco Cardiovascular com Inteligência Artificial',
   },
 }
