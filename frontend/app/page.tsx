@@ -27,7 +27,7 @@ export default function Home() {
           <div className="flex items-center gap-3 mb-4">
             <Heart className="w-10 h-10" />
             <div>
-              <h1 className="text-3xl font-bold">Sistema IA Médica</h1>
+              <h1 className="text-3xl font-bold">CardioCare AI — Análise de Risco Cardiovascular</h1>
               <p className="text-blue-100">Análise de Risco Cardiovascular com Inteligência Artificial</p>
             </div>
           </div>
