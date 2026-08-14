@@ -1,6 +1,6 @@
 import pytest
 
-from scores import framingham_office
+from scores import framingham_office, prevent
 
 
 class TestFraminghamOfficeBased:
@@ -54,4 +54,52 @@ class TestFraminghamOfficeBased:
         soma_contribuicoes = sum(c.contribuicao for c in r.contribuicoes)
         assert soma_contribuicoes == pytest.approx(
             r.preditor_linear - r.preditor_linear_referencia, abs=1e-9
+        )
+
+
+class TestPrevent:
+    CASO_MEDIO = dict(idade=55, colesterol_total=200, hdl=50, pas=130, imc=27, egfr=90,
+                       diabetes=False, tabagismo=False, anti_hipertensivo=False, estatina=False)
+    CASO_ALTO_RISCO = dict(idade=65, colesterol_total=240, hdl=40, pas=150, imc=32, egfr=70,
+                            diabetes=True, tabagismo=True, anti_hipertensivo=True, estatina=False)
+    CASO_JOVEM_SAUDAVEL = dict(idade=35, colesterol_total=180, hdl=60, pas=115, imc=23, egfr=100,
+                                diabetes=False, tabagismo=False, anti_hipertensivo=False, estatina=False)
+
+    @pytest.mark.parametrize("sexo,risco_10_esperado,risco_30_esperado", [
+        ("feminino", 3.6, 21.4),
+        ("masculino", 4.7, 24.7),
+    ])
+    def test_perfil_medio(self, sexo, risco_10_esperado, risco_30_esperado):
+        r = prevent.calcular(sexo=sexo, **self.CASO_MEDIO)
+        assert r.dez_anos.risco * 100 == pytest.approx(risco_10_esperado, abs=0.2)
+        assert r.trinta_anos is not None
+        assert r.trinta_anos.risco * 100 == pytest.approx(risco_30_esperado, abs=0.2)
+
+    @pytest.mark.parametrize("sexo,risco_10_esperado", [
+        ("feminino", 29.8),
+        ("masculino", 31.6),
+    ])
+    def test_perfil_alto_risco_sem_estimativa_30_anos(self, sexo, risco_10_esperado):
+        r = prevent.calcular(sexo=sexo, **self.CASO_ALTO_RISCO)
+        assert r.dez_anos.risco * 100 == pytest.approx(risco_10_esperado, abs=0.2)
+        assert r.trinta_anos is None  # idade 65 está fora de FAIXA_30_ANOS (30-59)
+
+    @pytest.mark.parametrize("sexo,risco_10_esperado,risco_30_esperado", [
+        ("feminino", 0.4, 3.0),
+        ("masculino", 0.6, 4.4),
+    ])
+    def test_perfil_jovem_saudavel(self, sexo, risco_10_esperado, risco_30_esperado):
+        r = prevent.calcular(sexo=sexo, **self.CASO_JOVEM_SAUDAVEL)
+        assert r.dez_anos.risco * 100 == pytest.approx(risco_10_esperado, abs=0.2)
+        assert r.trinta_anos.risco * 100 == pytest.approx(risco_30_esperado, abs=0.2)
+
+    def test_sexo_invalido_levanta_erro(self):
+        with pytest.raises(ValueError):
+            prevent.calcular(sexo="outro", **self.CASO_MEDIO)
+
+    def test_contribuicoes_somam_a_diferenca_do_preditor_linear(self):
+        r = prevent.calcular(sexo="feminino", **self.CASO_ALTO_RISCO)
+        soma = sum(c.contribuicao for c in r.dez_anos.contribuicoes)
+        assert soma == pytest.approx(
+            r.dez_anos.preditor_linear - r.dez_anos.preditor_linear_referencia, abs=1e-9
         )
