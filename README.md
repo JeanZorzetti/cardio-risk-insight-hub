@@ -1,4 +1,4 @@
-# 🏥 CardioCare AI - Análise de Risco Cardiovascular
+# 🏥 CardioRisk - Calculadora de Risco Cardiovascular
 
 Sistema de estratificação de risco cardiovascular baseado em escores clínicos validados e publicados (Framingham office-based e PREVENT), desenvolvido com Next.js + FastAPI.
 
