@@ -134,7 +134,7 @@ A API fornece três perfis de teste:
 
 ## 🎓 Contexto Acadêmico
 
-Este projeto implementa conceitos avançados de IA aplicada na medicina:
+Este projeto implementa escores clínicos validados aplicados à medicina:
 
 - **Escores de risco cardiovascular** publicados e validados (Framingham, PREVENT)
 - **Decomposição exata por fator** (log-linear, sem aproximação)
