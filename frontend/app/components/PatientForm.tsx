@@ -72,11 +72,14 @@ export default function PatientForm({ modo, onAnalysisComplete, isLoading, setIs
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="idade" className="block text-sm font-medium text-gray-700 mb-1">
               Idade
             </label>
             <input
+              id="idade"
               type="number"
+              aria-invalid={errors.idade ? 'true' : undefined}
+              aria-describedby={errors.idade ? 'idade-erro' : undefined}
               {...register('idade', {
                 required: 'Idade é obrigatória',
                 min: { value: 18, message: 'Idade mínima é 18 anos' },
@@ -84,7 +87,7 @@ export default function PatientForm({ modo, onAnalysisComplete, isLoading, setIs
               })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            {errors.idade && <p className="text-red-500 text-xs mt-1">{errors.idade.message}</p>}
+            {errors.idade && <p id="idade-erro" role="alert" className="text-red-600 text-xs mt-1">{errors.idade.message}</p>}
             {idadeForaDaFaixa && (
               <p className="text-yellow-700 text-xs mt-1">
                 Este cálculo é validado para {faixaMin}–{faixaMax} anos. Fora dessa faixa, você recebe
@@ -94,10 +97,11 @@ export default function PatientForm({ modo, onAnalysisComplete, isLoading, setIs
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="sexo" className="block text-sm font-medium text-gray-700 mb-1">
               Sexo
             </label>
             <select
+              id="sexo"
               {...register('sexo', { required: 'Sexo é obrigatório' })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
@@ -116,11 +120,14 @@ export default function PatientForm({ modo, onAnalysisComplete, isLoading, setIs
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="pas" className="block text-sm font-medium text-gray-700 mb-1">
               Pressão Sistólica (mmHg)
             </label>
             <input
+              id="pas"
               type="number"
+              aria-invalid={errors.pas ? 'true' : undefined}
+              aria-describedby={errors.pas ? 'pas-erro' : undefined}
               {...register('pas', {
                 required: 'Pressão sistólica é obrigatória',
                 min: { value: 60, message: 'Valor mínimo é 60 mmHg' },
@@ -128,16 +135,19 @@ export default function PatientForm({ modo, onAnalysisComplete, isLoading, setIs
               })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            {errors.pas && <p className="text-red-500 text-xs mt-1">{errors.pas.message}</p>}
+            {errors.pas && <p id="pas-erro" role="alert" className="text-red-600 text-xs mt-1">{errors.pas.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="peso" className="block text-sm font-medium text-gray-700 mb-1">
               Peso (kg)
             </label>
             <input
+              id="peso"
               type="number"
               step="0.1"
+              aria-invalid={errors.peso ? 'true' : undefined}
+              aria-describedby={errors.peso ? 'peso-erro' : undefined}
               {...register('peso', {
                 required: 'Peso é obrigatório',
                 min: { value: 20, message: 'Peso mínimo é 20 kg' },
@@ -145,16 +155,19 @@ export default function PatientForm({ modo, onAnalysisComplete, isLoading, setIs
               })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            {errors.peso && <p className="text-red-500 text-xs mt-1">{errors.peso.message}</p>}
+            {errors.peso && <p id="peso-erro" role="alert" className="text-red-600 text-xs mt-1">{errors.peso.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="altura" className="block text-sm font-medium text-gray-700 mb-1">
               Altura (m)
             </label>
             <input
+              id="altura"
               type="number"
               step="0.01"
+              aria-invalid={errors.altura ? 'true' : undefined}
+              aria-describedby={errors.altura ? 'altura-erro' : undefined}
               {...register('altura', {
                 required: 'Altura é obrigatória',
                 min: { value: 1.0, message: 'Altura mínima é 1.0 m' },
@@ -162,7 +175,7 @@ export default function PatientForm({ modo, onAnalysisComplete, isLoading, setIs
               })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            {errors.altura && <p className="text-red-500 text-xs mt-1">{errors.altura.message}</p>}
+            {errors.altura && <p id="altura-erro" role="alert" className="text-red-600 text-xs mt-1">{errors.altura.message}</p>}
           </div>
         </div>
         <div className="px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-gray-700 inline-block">
@@ -214,11 +227,14 @@ export default function PatientForm({ modo, onAnalysisComplete, isLoading, setIs
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="colesterol_total" className="block text-sm font-medium text-gray-700 mb-1">
                 Colesterol Total (mg/dL)
               </label>
               <input
+                id="colesterol_total"
                 type="number"
+                aria-invalid={errors.colesterol_total ? 'true' : undefined}
+                aria-describedby={errors.colesterol_total ? 'colesterol_total-erro' : undefined}
                 {...register('colesterol_total', {
                   required: 'Colesterol total é obrigatório',
                   min: { value: 50, message: 'Valor mínimo é 50 mg/dL' },
@@ -226,15 +242,18 @@ export default function PatientForm({ modo, onAnalysisComplete, isLoading, setIs
                 })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              {errors.colesterol_total && <p className="text-red-500 text-xs mt-1">{errors.colesterol_total.message}</p>}
+              {errors.colesterol_total && <p id="colesterol_total-erro" role="alert" className="text-red-600 text-xs mt-1">{errors.colesterol_total.message}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="hdl" className="block text-sm font-medium text-gray-700 mb-1">
                 HDL (mg/dL)
               </label>
               <input
+                id="hdl"
                 type="number"
+                aria-invalid={errors.hdl ? 'true' : undefined}
+                aria-describedby={errors.hdl ? 'hdl-erro' : undefined}
                 {...register('hdl', {
                   required: 'HDL é obrigatório',
                   min: { value: 10, message: 'Valor mínimo é 10 mg/dL' },
@@ -242,15 +261,18 @@ export default function PatientForm({ modo, onAnalysisComplete, isLoading, setIs
                 })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              {errors.hdl && <p className="text-red-500 text-xs mt-1">{errors.hdl.message}</p>}
+              {errors.hdl && <p id="hdl-erro" role="alert" className="text-red-600 text-xs mt-1">{errors.hdl.message}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="egfr" className="block text-sm font-medium text-gray-700 mb-1">
                 eGFR (mL/min/1.73m²)
               </label>
               <input
+                id="egfr"
                 type="number"
+                aria-invalid={errors.egfr ? 'true' : undefined}
+                aria-describedby={errors.egfr ? 'egfr-erro' : undefined}
                 {...register('egfr', {
                   required: 'eGFR é obrigatório',
                   min: { value: 5, message: 'Valor mínimo é 5' },
@@ -258,7 +280,7 @@ export default function PatientForm({ modo, onAnalysisComplete, isLoading, setIs
                 })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              {errors.egfr && <p className="text-red-500 text-xs mt-1">{errors.egfr.message}</p>}
+              {errors.egfr && <p id="egfr-erro" role="alert" className="text-red-600 text-xs mt-1">{errors.egfr.message}</p>}
             </div>
           </div>
           <label className="flex items-center space-x-2">
