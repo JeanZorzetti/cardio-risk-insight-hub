@@ -2,18 +2,24 @@
 
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
-import { Loader2, User, Activity, Stethoscope } from 'lucide-react'
-import { EntradaRapida, RespostaAvaliacao } from '../types/medical'
-import { calcularRiscoRapido } from '../utils/api'
+import { Loader2, User, Activity, Stethoscope, FlaskConical } from 'lucide-react'
+import { EntradaPrevent, RespostaAvaliacao } from '../types/medical'
+import { calcularRiscoRapido, calcularRiscoPrevent } from '../utils/api'
+
+const FAIXA_ETARIA: Record<'rapido' | 'completo', [number, number]> = {
+  rapido: [30, 74],
+  completo: [30, 79],
+}
 
 interface PatientFormProps {
+  modo: 'rapido' | 'completo'
   onAnalysisComplete: (result: RespostaAvaliacao) => void
   isLoading: boolean
   setIsLoading: (loading: boolean) => void
 }
 
-export default function PatientForm({ onAnalysisComplete, isLoading, setIsLoading }: PatientFormProps) {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<EntradaRapida>({
+export default function PatientForm({ modo, onAnalysisComplete, isLoading, setIsLoading }: PatientFormProps) {
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<EntradaPrevent>({
     defaultValues: {
       idade: 45,
       sexo: 'masculino',
@@ -26,17 +32,26 @@ export default function PatientForm({ onAnalysisComplete, isLoading, setIsLoadin
       dor_peito: false,
       falta_ar: false,
       fadiga: false,
-      tontura: false
+      tontura: false,
+      colesterol_total: 200,
+      hdl: 50,
+      egfr: 90,
+      usa_estatina: false,
     }
   })
 
   const watchedData = watch()
   const bmi = watchedData.peso / (watchedData.altura ** 2)
+  const [faixaMin, faixaMax] = FAIXA_ETARIA[modo]
+  const idadeForaDaFaixa = watchedData.idade != null && (watchedData.idade < faixaMin || watchedData.idade > faixaMax)
 
-  const onSubmit = async (data: EntradaRapida) => {
+  const onSubmit = async (data: EntradaPrevent) => {
     setIsLoading(true)
     try {
-      const result = await calcularRiscoRapido(data)
+      const { colesterol_total, hdl, egfr, usa_estatina, ...dadosRapido } = data
+      const result = modo === 'completo'
+        ? await calcularRiscoPrevent(data)
+        : await calcularRiscoRapido(dadosRapido)
       onAnalysisComplete(result)
       toast.success('Análise realizada com sucesso!')
     } catch (error: any) {
@@ -70,6 +85,12 @@ export default function PatientForm({ onAnalysisComplete, isLoading, setIsLoadin
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             {errors.idade && <p className="text-red-500 text-xs mt-1">{errors.idade.message}</p>}
+            {idadeForaDaFaixa && (
+              <p className="text-yellow-700 text-xs mt-1">
+                Este cálculo é validado para {faixaMin}–{faixaMax} anos. Fora dessa faixa, você recebe
+                uma orientação para buscar avaliação médica, não um percentual de risco.
+              </p>
+            )}
           </div>
 
           <div>
@@ -184,6 +205,72 @@ export default function PatientForm({ onAnalysisComplete, isLoading, setIsLoadin
           </label>
         </div>
       </div>
+
+      {modo === 'completo' && (
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
+            <FlaskConical className="w-5 h-5" />
+            Exames Laboratoriais
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Colesterol Total (mg/dL)
+              </label>
+              <input
+                type="number"
+                {...register('colesterol_total', {
+                  required: 'Colesterol total é obrigatório',
+                  min: { value: 50, message: 'Valor mínimo é 50 mg/dL' },
+                  max: { value: 500, message: 'Valor máximo é 500 mg/dL' }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              {errors.colesterol_total && <p className="text-red-500 text-xs mt-1">{errors.colesterol_total.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                HDL (mg/dL)
+              </label>
+              <input
+                type="number"
+                {...register('hdl', {
+                  required: 'HDL é obrigatório',
+                  min: { value: 10, message: 'Valor mínimo é 10 mg/dL' },
+                  max: { value: 150, message: 'Valor máximo é 150 mg/dL' }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              {errors.hdl && <p className="text-red-500 text-xs mt-1">{errors.hdl.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                eGFR (mL/min/1.73m²)
+              </label>
+              <input
+                type="number"
+                {...register('egfr', {
+                  required: 'eGFR é obrigatório',
+                  min: { value: 5, message: 'Valor mínimo é 5' },
+                  max: { value: 200, message: 'Valor máximo é 200' }
+                })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              {errors.egfr && <p className="text-red-500 text-xs mt-1">{errors.egfr.message}</p>}
+            </div>
+          </div>
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              {...register('usa_estatina')}
+              className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+            />
+            <span className="text-sm text-gray-700">Em uso de estatina</span>
+          </label>
+        </div>
+      )}
 
       {/* Sintomas */}
       <div className="space-y-4">
