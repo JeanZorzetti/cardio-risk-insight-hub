@@ -1,10 +1,10 @@
 # 🏥 CardioCare AI - Análise de Risco Cardiovascular
 
-Sistema completo de inteligência artificial para análise de risco cardiovascular, desenvolvido com React + FastAPI.
+Sistema de estratificação de risco cardiovascular baseado em escores clínicos validados e publicados (Framingham office-based e PREVENT), desenvolvido com Next.js + FastAPI.
 
 ## 🚀 Funcionalidades
 
-- **🤖 IA Explicável**: Análise de risco com explicações SHAP detalhadas
+- **🩺 Escores Validados**: Framingham office-based e PREVENT (AHA/SBC), com decomposição exata por fator de risco
 - **📊 Visualizações Interativas**: Gráficos e métricas em tempo real
 - **🩺 Precisão Médica**: Baseado em diretrizes cardiológicas validadas
 - **📱 Interface Moderna**: Design responsivo com Shadcn/ui
@@ -80,7 +80,8 @@ VITE_API_URL=http://localhost:8000
 
 - `GET /` - Informações da API
 - `GET /health` - Health check
-- `POST /analise-completa` - Análise completa com SHAP
+- `POST /risco/rapido` - Framingham office-based (modo rápido, sem exames)
+- `POST /risco/prevent` - PREVENT (modo completo, risco em 10 e 30 anos)
 - `GET /exemplo-paciente` - Dados de exemplo para testes
 - `GET /docs` - Documentação interativa (Swagger)
 
@@ -95,7 +96,7 @@ A API fornece três perfis de teste:
 ### Fluxo de Teste
 1. Acesse a aplicação
 2. Preencha o formulário com dados do paciente
-3. Visualize análise de risco com explicações SHAP
+3. Visualize o risco calculado e a decomposição por fator de risco
 4. Consulte recomendações médicas personalizadas
 
 ## 🎯 Tecnologias Utilizadas
@@ -112,7 +113,6 @@ A API fornece três perfis de teste:
 - **FastAPI** (Python web framework)
 - **Pydantic v2** (validação de dados)
 - **Uvicorn** (servidor ASGI)
-- **NumPy/Pandas** (processamento de dados)
 
 ## 🔒 Segurança e Validação
 
@@ -136,9 +136,8 @@ A API fornece três perfis de teste:
 
 Este projeto implementa conceitos avançados de IA aplicada na medicina:
 
-- **Geração de dados sintéticos** realistas
-- **Algoritmos de Machine Learning** supervisionados
-- **Explicabilidade de modelos** com técnicas SHAP
+- **Escores de risco cardiovascular** publicados e validados (Framingham, PREVENT)
+- **Decomposição exata por fator** (log-linear, sem aproximação)
 - **Interface profissional** para uso médico
 - **Arquitetura de microserviços** moderna
 
