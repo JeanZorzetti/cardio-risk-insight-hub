@@ -84,6 +84,9 @@ class RespostaRisco(BaseModel):
     risco_30_anos: Optional[float] = Field(
         None, description="Probabilidade em 30 anos (0-1); só PREVENT, e só para idade 30-59"
     )
+    risco_truncado: bool = Field(
+        False, description="True se o risco bruto calculado estava fora de 1%-30% e foi truncado nesse intervalo"
+    )
     bmi: float
     classificacao_bmi: str
     contribuicoes: List[ContribuicaoResponse]
@@ -196,6 +199,7 @@ async def risco_rapido(dados: EntradaRapida):
     return RespostaRisco(
         categoria_risco=_categoria_risco(resultado.risco_10_anos),
         risco_10_anos=resultado.risco_10_anos,
+        risco_truncado=resultado.risco_truncado,
         bmi=bmi,
         classificacao_bmi=classificacao_bmi,
         contribuicoes=[

@@ -39,6 +39,14 @@ class TestFraminghamOfficeBased:
         )
         assert r.risco_10_anos == pytest.approx(0.30, abs=1e-9)
 
+    def test_risco_atinge_o_piso_de_1_por_cento(self):
+        r = framingham_office.calcular(
+            sexo="feminino", idade=30, imc=18.5, pas=90,
+            em_tratamento_anti_hipertensivo=False, tabagismo=False, diabetes=False,
+        )
+        assert r.risco_10_anos == pytest.approx(0.01, abs=1e-9)
+        assert r.risco_truncado is True
+
     def test_sexo_invalido_levanta_erro(self):
         with pytest.raises(ValueError):
             framingham_office.calcular(
@@ -92,6 +100,15 @@ class TestPrevent:
         r = prevent.calcular(sexo=sexo, **self.CASO_JOVEM_SAUDAVEL)
         assert r.dez_anos.risco * 100 == pytest.approx(risco_10_esperado, abs=0.2)
         assert r.trinta_anos.risco * 100 == pytest.approx(risco_30_esperado, abs=0.2)
+
+    @pytest.mark.parametrize("idade,tem_30_anos", [
+        (29, False), (30, True), (59, True), (60, False), (79, False),
+    ])
+    def test_faixa_30_anos_e_o_limite_correto(self, idade, tem_30_anos):
+        caso = dict(self.CASO_MEDIO)
+        caso["idade"] = idade
+        r = prevent.calcular(sexo="feminino", **caso)
+        assert (r.trinta_anos is not None) == tem_30_anos
 
     def test_sexo_invalido_levanta_erro(self):
         with pytest.raises(ValueError):

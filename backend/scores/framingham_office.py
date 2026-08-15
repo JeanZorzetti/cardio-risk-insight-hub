@@ -40,6 +40,7 @@ class Contribuicao:
 @dataclass(frozen=True)
 class ResultadoFramingham:
     risco_10_anos: float
+    risco_truncado: bool
     preditor_linear: float
     preditor_linear_referencia: float
     contribuicoes: list
@@ -64,8 +65,9 @@ def calcular(sexo, idade, imc, pas, em_tratamento_anti_hipertensivo, tabagismo, 
 
     coef = _COEF[sexo]
     soma = _preditor_linear(coef, idade, imc, pas, em_tratamento_anti_hipertensivo, tabagismo, diabetes)
-    risco = 1 - coef["sobrevida_base"] ** math.exp(soma - coef["media_grupo"])
-    risco = max(0.01, min(0.30, risco))
+    risco_bruto = 1 - coef["sobrevida_base"] ** math.exp(soma - coef["media_grupo"])
+    risco = max(0.01, min(0.30, risco_bruto))
+    risco_truncado = risco_bruto < 0.01 or risco_bruto > 0.30
 
     soma_referencia = _preditor_linear(
         coef, idade,
@@ -74,14 +76,18 @@ def calcular(sexo, idade, imc, pas, em_tratamento_anti_hipertensivo, tabagismo, 
     )
 
     pas_coef_paciente = coef["ln_pas_tratada"] if em_tratamento_anti_hipertensivo else coef["ln_pas_sem_tratamento"]
-    pas_coef_referencia = coef["ln_pas_sem_tratamento"]
 
     contribuicoes = [
         Contribuicao("IMC", imc, coef["ln_imc"] * (math.log(imc) - math.log(_REFERENCIA["imc"]))),
         Contribuicao(
             "Pressão sistólica",
             pas,
-            pas_coef_paciente * math.log(pas) - pas_coef_referencia * math.log(_REFERENCIA["pas"]),
+            coef["ln_pas_sem_tratamento"] * (math.log(pas) - math.log(_REFERENCIA["pas"])),
+        ),
+        Contribuicao(
+            "Uso de anti-hipertensivo",
+            float(em_tratamento_anti_hipertensivo),
+            (pas_coef_paciente - coef["ln_pas_sem_tratamento"]) * math.log(pas),
         ),
         Contribuicao("Tabagismo", float(tabagismo), coef["tabagismo"] * (1.0 if tabagismo else 0.0)),
         Contribuicao("Diabetes", float(diabetes), coef["diabetes"] * (1.0 if diabetes else 0.0)),
@@ -89,6 +95,7 @@ def calcular(sexo, idade, imc, pas, em_tratamento_anti_hipertensivo, tabagismo, 
 
     return ResultadoFramingham(
         risco_10_anos=round(risco, 4),
+        risco_truncado=risco_truncado,
         preditor_linear=soma,
         preditor_linear_referencia=soma_referencia,
         contribuicoes=contribuicoes,

@@ -82,16 +82,9 @@ VITE_API_URL=http://localhost:8000
 - `GET /health` - Health check
 - `POST /risco/rapido` - Framingham office-based (modo rápido, sem exames)
 - `POST /risco/prevent` - PREVENT (modo completo, risco em 10 e 30 anos)
-- `GET /exemplo-paciente` - Dados de exemplo para testes
 - `GET /docs` - Documentação interativa (Swagger)
 
 ## 🧪 Testando a Aplicação
-
-### Dados de Exemplo
-A API fornece três perfis de teste:
-- **Baixo Risco**: Paciente jovem, pressão normal
-- **Médio Risco**: Fatores de risco moderados
-- **Alto Risco**: Múltiplos fatores de risco
 
 ### Fluxo de Teste
 1. Acesse a aplicação
