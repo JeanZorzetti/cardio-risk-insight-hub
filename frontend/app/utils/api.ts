@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios'
-import { EntradaRapida, RespostaAvaliacao, APIError } from '../types/medical'
+import { EntradaRapida, EntradaPrevent, RespostaAvaliacao, APIError } from '../types/medical'
 
 // Configuração base da API
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://cardioapi.roilabs.com.br'
@@ -51,6 +51,12 @@ export const checkAPIHealth = async (): Promise<boolean> => {
 // Modo rápido (Framingham office-based, sem exames)
 export const calcularRiscoRapido = async (dados: EntradaRapida): Promise<RespostaAvaliacao> => {
   const response = await api.post<RespostaAvaliacao>('/risco/rapido', dados)
+  return response.data
+}
+
+// Modo completo (PREVENT, com exames)
+export const calcularRiscoPrevent = async (dados: EntradaPrevent): Promise<RespostaAvaliacao> => {
+  const response = await api.post<RespostaAvaliacao>('/risco/prevent', dados)
   return response.data
 }
 

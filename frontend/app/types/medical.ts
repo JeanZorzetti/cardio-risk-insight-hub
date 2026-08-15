@@ -15,6 +15,13 @@ export interface EntradaRapida {
   tontura: boolean
 }
 
+export interface EntradaPrevent extends EntradaRapida {
+  colesterol_total: number
+  hdl: number
+  egfr: number
+  usa_estatina: boolean
+}
+
 export interface Contribuicao {
   fator: string
   valor: number
