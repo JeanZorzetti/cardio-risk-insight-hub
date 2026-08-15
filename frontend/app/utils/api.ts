@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios'
-import { PacienteInput, AnaliseResponse, APIError } from '../types/medical'
+import { EntradaRapida, RespostaAvaliacao, APIError } from '../types/medical'
 
 // Configuração base da API
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://cardioapi.roilabs.com.br'
@@ -17,14 +17,14 @@ api.interceptors.response.use(
   (response) => response,
   (error: AxiosError<APIError>) => {
     console.error('API Error:', error)
-    
+
     if (error.code === 'ECONNABORTED') {
       throw new Error('Timeout: A requisição demorou muito para responder')
     }
-    
+
     if (error.response) {
       // Erro da API (4xx, 5xx)
-      const message = error.response.data?.detail || 
+      const message = error.response.data?.detail ||
                      `Erro ${error.response.status}: ${error.response.statusText}`
       throw new Error(message)
     } else if (error.request) {
@@ -48,54 +48,10 @@ export const checkAPIHealth = async (): Promise<boolean> => {
   }
 }
 
-// Função para analisar um paciente
-export const analisarPaciente = async (dados: PacienteInput): Promise<AnaliseResponse> => {
-  try {
-    const response = await api.post<AnaliseResponse>('/analise-completa', dados)
-    return response.data
-  } catch (error) {
-    console.error('Erro ao analisar paciente:', error)
-    throw error
-  }
-}
-
-// Função para obter exemplos de pacientes
-export const obterExemplosPacientes = async () => {
-  try {
-    const response = await api.get('/exemplo-paciente')
-    return response.data
-  } catch (error) {
-    console.error('Erro ao obter exemplos:', error)
-    throw error
-  }
-}
-
-// Função auxiliar para validar URL da API
-export const validateAPIUrl = (url: string): boolean => {
-  try {
-    new URL(url)
-    return true
-  } catch {
-    return false
-  }
-}
-
-// Função para testar conectividade
-export const testConnection = async (): Promise<{ success: boolean; message: string; url: string }> => {
-  try {
-    const response = await api.get('/')
-    return {
-      success: true,
-      message: 'Conexão estabelecida com sucesso',
-      url: API_BASE_URL
-    }
-  } catch (error: any) {
-    return {
-      success: false,
-      message: error.message || 'Erro ao conectar com a API',
-      url: API_BASE_URL
-    }
-  }
+// Modo rápido (Framingham office-based, sem exames)
+export const calcularRiscoRapido = async (dados: EntradaRapida): Promise<RespostaAvaliacao> => {
+  const response = await api.post<RespostaAvaliacao>('/risco/rapido', dados)
+  return response.data
 }
 
 export { API_BASE_URL }

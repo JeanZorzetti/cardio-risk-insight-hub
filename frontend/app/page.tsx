@@ -4,13 +4,13 @@ import { useState } from 'react'
 import { Heart, Activity, Users, Brain, ChevronRight } from 'lucide-react'
 import PatientForm from './components/PatientForm'
 import ResultsDisplay from './components/ResultsDisplay'
-import { AnaliseResponse } from './types/medical'
+import { RespostaAvaliacao } from './types/medical'
 
 export default function Home() {
-  const [analysisResult, setAnalysisResult] = useState<AnaliseResponse | null>(null)
+  const [analysisResult, setAnalysisResult] = useState<RespostaAvaliacao | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleAnalysisComplete = (result: AnaliseResponse) => {
+  const handleAnalysisComplete = (result: RespostaAvaliacao) => {
     setAnalysisResult(result)
     setIsLoading(false)
   }

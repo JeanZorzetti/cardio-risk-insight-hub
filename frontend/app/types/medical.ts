@@ -1,62 +1,47 @@
-// Tipos TypeScript para o sistema médico
+// Tipos TypeScript para o contrato da API CardioRisk (ver backend/main.py)
 
-export interface PacienteInput {
+export interface EntradaRapida {
   idade: number
-  genero: 'Masculino' | 'Feminino'
-  tipo_sanguineo: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-'
-  pressao_sistolica: number
-  pressao_diastolica: number
-  freq_cardiaca: number
+  sexo: 'masculino' | 'feminino'
   peso: number
   altura: number
-  colesterol: number
-  glicose: number
-  num_medicamentos: number
-  visitas_anuais: number
+  pas: number
+  usa_anti_hipertensivo: boolean
+  tabagismo: boolean
+  diabetes: boolean
   dor_peito: boolean
   falta_ar: boolean
   fadiga: boolean
   tontura: boolean
 }
 
-export interface PredicaoResponse {
-  categoria_risco: 'Baixo Risco' | 'Medio Risco' | 'Alto Risco'
-  probabilidade: number
-  score_risco: number
-  confianca: number
-  timestamp: string
+export interface Contribuicao {
+  fator: string
+  valor: number
+  contribuicao: number
+}
+
+export interface RespostaRisco {
+  tipo: 'resultado'
+  categoria_risco: 'Baixo Risco' | 'Médio Risco' | 'Alto Risco'
+  risco_10_anos: number
+  risco_30_anos: number | null
+  risco_truncado: boolean
   bmi: number
   classificacao_bmi: string
-  classificacao_pressao: string
+  contribuicoes: Contribuicao[]
+  escore: string
+  fonte: string
+  timestamp: string
 }
 
-export interface ExplicacaoSHAP {
-  fator: string
-  valor: number | string
-  impacto: number
-  interpretacao: string
-  categoria: 'increase_risk' | 'decrease_risk' | 'neutral'
+export interface RespostaBloqueio {
+  tipo: 'bloqueio'
+  motivo: 'sintomas' | 'faixa_etaria'
+  mensagem: string
 }
 
-export interface ExplicacoesResponse {
-  fatores_risco: ExplicacaoSHAP[]
-  fatores_protecao: ExplicacaoSHAP[]
-  interpretacao_geral: string
-  recomendacoes: string[]
-}
-
-export interface AnaliseResponse {
-  predicao: PredicaoResponse
-  explicacoes: ExplicacoesResponse
-  dados_processados: {
-    entrada: PacienteInput
-    calculos: {
-      bmi: number
-      score_final: number
-      fatores_analisados: number
-    }
-  }
-}
+export type RespostaAvaliacao = RespostaRisco | RespostaBloqueio
 
 export interface APIError {
   detail: string
