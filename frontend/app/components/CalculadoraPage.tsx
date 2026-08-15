@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { Heart, Activity, Users, Brain, ChevronRight } from 'lucide-react'
 import PatientForm from './PatientForm'
 import ResultsDisplay from './ResultsDisplay'
@@ -75,6 +76,23 @@ export default function CalculadoraPage({ modo }: CalculadoraPageProps) {
         </div>
       </header>
 
+      <div className="border-b bg-white">
+        <div className="container mx-auto px-4 py-3 flex flex-wrap gap-4 text-sm text-gray-600">
+          {modo === 'rapido' ? (
+            <Link href="/calculadora/prevent" className="text-blue-600 hover:underline">
+              Prefere o modo completo (PREVENT)?
+            </Link>
+          ) : (
+            <Link href="/calculadora" className="text-blue-600 hover:underline">
+              Prefere o modo rápido (sem exames)?
+            </Link>
+          )}
+          <Link href="/metodologia" className="text-blue-600 hover:underline">
+            Como calculamos isso?
+          </Link>
+        </div>
+      </div>
+
       <main className="container mx-auto px-4 py-8">
         {!analysisResult ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -125,7 +143,7 @@ export default function CalculadoraPage({ modo }: CalculadoraPageProps) {
                   </li>
                   <li className="flex items-center gap-2 text-sm text-gray-600">
                     <ChevronRight className="w-4 h-4 text-green-500" />
-                    Recomendações Personalizadas
+                    Fonte científica publicada para cada escore
                   </li>
                   <li className="flex items-center gap-2 text-sm text-gray-600">
                     <ChevronRight className="w-4 h-4 text-green-500" />
