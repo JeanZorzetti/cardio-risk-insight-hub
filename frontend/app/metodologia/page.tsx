@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Heart } from 'lucide-react'
+import Logo from '../components/Logo'
 
 export const metadata: Metadata = {
   title: 'Metodologia — Como calculamos o risco cardiovascular | CardioRisk',
@@ -67,7 +67,7 @@ export default function MetodologiaPage() {
       <header className="gradient-medical text-white">
         <div className="container mx-auto px-4 py-8">
           <div className="flex items-center gap-3">
-            <Heart className="w-10 h-10" />
+            <Logo className="w-14 h-14 shrink-0" />
             <div>
               <h1 className="text-3xl font-bold">Metodologia</h1>
               <p className="text-blue-100">Como o CardioRisk calcula o risco cardiovascular</p>

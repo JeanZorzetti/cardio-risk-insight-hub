@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Heart, Activity, Users, Brain, ChevronRight } from 'lucide-react'
+import Logo from './Logo'
 import PatientForm from './PatientForm'
 import ResultsDisplay from './ResultsDisplay'
 import { RespostaAvaliacao } from '../types/medical'
@@ -43,7 +44,7 @@ export default function CalculadoraPage({ modo }: CalculadoraPageProps) {
       <header className="gradient-medical text-white">
         <div className="container mx-auto px-4 py-8">
           <div className="flex items-center gap-3 mb-4">
-            <Heart className="w-10 h-10" />
+            <Logo className="w-14 h-14 shrink-0" />
             <div>
               <h1 className="text-3xl font-bold">{conteudo.titulo}</h1>
               <p className="text-blue-100">{conteudo.subtitulo}</p>
