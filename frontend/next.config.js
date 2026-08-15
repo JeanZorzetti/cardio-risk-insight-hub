@@ -12,7 +12,12 @@ const nextConfig = {
     // Vercel and this fallback stops mattering.
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL ||
       (process.env.NODE_ENV === 'production' ? 'https://cardioapi.roilabs.com.br' : 'http://localhost:8000'),
-  }
+  },
+  async redirects() {
+    return [
+      { source: '/', destination: '/calculadora', permanent: true },
+    ]
+  },
 }
 
 module.exports = nextConfig
